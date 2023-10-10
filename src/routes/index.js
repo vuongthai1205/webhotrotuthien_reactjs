@@ -8,6 +8,7 @@ import PostAuction from "../pages/PostAuction";
 import ProjectAuction from "../pages/ProjectAuction";
 import About from "pages/About";
 import Contact from "pages/Contact";
+import DetailProject from "components/Projects/DetailProject";
 const publicRoutes = [
   { path: "/", layout: HeaderOnly, component: Home, title: "Trang chủ" },
   { path: "/about", layout: HeaderOnly, component: About, title: "Giới thiệu" },
@@ -33,7 +34,12 @@ const publicRoutes = [
 ];
 
 const privateRoutes = [
-  { path: "/post/:postId", component: PostDetail, layout: HeaderOnly },
+  { path: "/post-auction/:postId", component: PostDetail },
+  {
+    path: "/project-auction/:projectId",
+    component: DetailProject,
+    title: "Dự án từ thiện",
+  },
   { path: "/profile", component: Profile, title: "Trang cá nhân" },
 ];
 

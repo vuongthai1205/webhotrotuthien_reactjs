@@ -5,7 +5,7 @@ import Image from "react-bootstrap/Image";
 import { MyUserContext } from "../../../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { logofooter } from "assets/img";
 function Header() {
   const [user, dispatch] = useContext(MyUserContext);
@@ -46,16 +46,16 @@ function Header() {
                   </li>
                   <li className="item-menu-header ml-[13px]">
                     <NavLink
-                      to={"/post-auction"}
+                      to={"/project-auction"}
                       className="item-link-header flex items-center">
-                      BÀI VIẾT
+                      DỰ ÁN
                     </NavLink>
                   </li>
                   <li className="item-menu-header ml-[13px]">
                     <NavLink
-                      to={"/project-auction"}
+                      to={"/post-auction"}
                       className="item-link-header flex items-center">
-                      DỰ ÁN
+                      BÀI VIẾT
                     </NavLink>
                   </li>
                   <li className="item-menu-header ml-[13px]">
@@ -109,7 +109,7 @@ function Header() {
                         <NavLink
                           to={"/register"}
                           className="btn-login flex items-center gap-[4px]">
-                          <FontAwesomeIcon icon={faUser} />
+                          <FontAwesomeIcon icon={faUserPlus} />
                           ĐĂNG KÝ
                         </NavLink>
                       </li>

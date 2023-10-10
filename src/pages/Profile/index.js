@@ -37,7 +37,7 @@ function Profile() {
   return (
     <>
       <div>
-        <h2>Trang cá nhân</h2>
+        <h2 className="font-['Calistoga'] text-[25px] text-center">Trang cá nhân</h2>
         <div>
           {user ? (
             <>

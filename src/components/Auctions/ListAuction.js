@@ -22,7 +22,7 @@ function ListAuction({ listAuction, showPopup, closePopup }) {
           })}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closePopup}>
+          <Button className="bg-color-btn-secondary" variant="secondary" onClick={closePopup}>
             Đóng
           </Button>
         </Modal.Footer>

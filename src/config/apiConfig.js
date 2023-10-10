@@ -14,6 +14,7 @@ export const endpoints = {
     "auction": `${SERVER_CONTEXT}/api/auction/`,
     "comment": `${SERVER_CONTEXT}/api/post/comment/`,
     "user": `${SERVER_CONTEXT}/api/user/`,
+    "project":  `${SERVER_CONTEXT}/api/charity-project/`
 }
 
 export const authApi = () => {

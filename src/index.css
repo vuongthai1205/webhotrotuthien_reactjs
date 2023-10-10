@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  font-family: "Amiko", sans-serif;
+  font-family: "Montserrat", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -220,30 +220,6 @@ section.seaction-header {
   position: relative;
 }
 
-input[type='date']:not(:focus):in-range::-webkit-datetime-edit-year-field,
-input[type='date']:not(:focus):in-range::-webkit-datetime-edit-month-field,
-input[type='date']:not(:focus):in-range::-webkit-datetime-edit-day-field,
-input[type='date']:not(:focus):in-range::-webkit-datetime-edit-text {
-    color: transparent;
-}
-
-/* iOS background fix */
-input[type='date']:empty {
-    background-color: #D9D9D9;
-}
-
-/* iOS fix for text alignment */
-input::-webkit-date-and-time-value {
-    text-align: left;
-    color: var(--sg-black);
-}
-
-/* iOS date-placeholder fix */
-input[type='date']:not(:focus):empty:after {
-    position: absolute;
-    color: #aaa;
-    content: attr(placeholder);
-}
 
 .page-login{
   background-position: center center;

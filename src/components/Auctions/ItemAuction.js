@@ -25,7 +25,7 @@ function ItemAuction(auction) {
         {auction.username}: {auction.price}
       </h6>
       <Button
-        className="mb-2"
+        className="mb-2 bg-color-btn-main"
         onClick={() => {
           handleWinnerAuction(auction.id);
         }}

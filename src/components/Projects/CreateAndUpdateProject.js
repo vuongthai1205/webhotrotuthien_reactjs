@@ -1,83 +1,75 @@
-import { Button, Col, Form, Modal, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import appFirebase from "../../config/firebase";
+import { MyUserContext } from "App";
+import ImagePost from "components/Posts/ImagePost";
+import { authApi, endpoints } from "config/apiConfig";
+import appFirebase from "config/firebase";
 import {
+  getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
-  getDownloadURL,
 } from "firebase/storage";
-import { useState } from "react";
-import { authApi, endpoints } from "../../config/apiConfig";
+import { formatDateForInput } from "functions";
 import { useContext } from "react";
-import { MyUserContext } from "../../App";
 import { useEffect } from "react";
-import ImagePost from "./ImagePost";
+import { useState } from "react";
+import { Button, Col, Modal, Row, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-function CreateAndUpdatePost({
-  onPostCreated,
+function CreateAndUpdateProject({
+  onProjectCreated,
   showPopup,
   closePopup,
-  post,
-  onPostUpdate,
+  project,
 }) {
   
   const [error, setError] = useState("");
   const [user, dispatch] = useContext(MyUserContext);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [checkAuction, setCheckAuction] = useState(false);
-
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
+    nameProject: "",
+    purpose: "",
+    address: "",
+    amountRaised: "",
     images: [],
-    startPrice: "",
-    auctionStatus: checkAuction === true ? 2 : 1 ,
-    auctionStartTime: "",
-    auctionEndTime: ""
-  }); 
+    startTime: "",
+    endTime: "",
+  });
   useEffect(() => {
-    if (post !== undefined) {
-      setFormData((prevData) => ( {
+    if (project !== undefined) {
+      setFormData((prevData) => ({
         ...prevData,
-        title: post.title,
-        content: post.content,
-        images: post.imagesPost ? post.imagesPost : [],
-        startPrice: checkAuction ?  post.startPrice : 0,
-        auctionStatus: checkAuction ? 2 : 1,
+        nameProject: project.nameProject,
+        purpose: project.purpose,
+        address: project.address,
+        amountRaised: project.amountRaised,
+        images: project.images ? project.images : [],
+        startTime: formatDateForInput(project.startTime),
+        endTime: formatDateForInput(project.endTime),
       }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        auctionStatus: checkAuction ? 2 : 1,
       }));
     }
-  }, [post, checkAuction]);
-  
-
+  }, [project]);
   const isFormDataValid = (data) => {
-    if (
-      data.title.trim() === "" ||
-      data.content.trim() === "" 
-    ) {
+    if (data.nameProject.trim() === "" || data.purpose.trim() === "") {
       setError("Vui lòng điền thông tin");
       return true;
-    } else if (data.title.trim() === "") {
-      setError("Vui lòng điền tiêu đề");
+    } else if (data.nameProject.trim() === "") {
+      setError("Vui lòng điền tên dự án");
       return true;
     } else {
       return false;
     }
   };
-  console.log(formData)
   const handleImageChange = async (e) => {
     setFormData((prevData) => ({
       ...prevData,
       images: [],
     }));
-    for(let i = 0 , f ; f = e.target.files[i]; i++ ){
-
+    for (let i = 0, f; (f = e.target.files[i]); i++) {
       if (f) {
         const image = f;
         const storageRef = getStorage(appFirebase);
@@ -94,7 +86,7 @@ function CreateAndUpdatePost({
             switch (snapshot.state) {
               case "paused":
                 console.log("Upload is paused");
-  
+
                 break;
               case "running":
                 setLoading(true);
@@ -110,9 +102,9 @@ function CreateAndUpdatePost({
             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               setLoading(false);
-              setFormData(prevFormData => ({
+              setFormData((prevFormData) => ({
                 ...prevFormData,
-                images: [...prevFormData.images, { link: downloadURL }]
+                images: [...prevFormData.images, { link: downloadURL }],
               }));
             });
           }
@@ -120,7 +112,6 @@ function CreateAndUpdatePost({
       }
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -135,42 +126,48 @@ function CreateAndUpdatePost({
       return;
     }
 
-    if (post !== undefined) {
+    if (project !== undefined) {
       try {
         const response = await authApi().put(
-          `${endpoints["posts"]}${post.id}/`,
+          `${endpoints["project"]}${project.id}/`,
           formData
         );
         if (response.status === 200) {
-          onPostUpdate();
           closePopup();
           setFormData({
-            title: "",
-            content: "",
+            nameProject: "",
+            purpose: "",
+            address: "",
+            amountRaised: "",
             images: [],
-            startPrice: "",
+            startTime: "",
+            endTime: "",
           });
-          console.log("Post updated successfully");
+          navigate("/project-auction")
+          console.log("Project updated successfully");
         } else if (response.status === 500) {
-          console.log("Failed to add or update pos");
+          console.log("Failed to add or update project");
         } else {
-          console.log("You can not permission to edit the post");
+          console.log("You can not permission to edit the Project");
         }
       } catch (ex) {
         console.log(ex);
       }
     } else {
       try {
-        const response = await authApi().post(endpoints["posts"], formData);
+        const response = await authApi().post(endpoints["project"], formData);
 
         if (response.status === 201) {
-          onPostCreated();
+          onProjectCreated();
           closePopup();
           setFormData({
-            title: "",
-            content: "",
+            nameProject: "",
+            purpose: "",
+            address: "",
+            amountRaised: "",
             images: [],
-            startPrice: "",
+            startTime: "",
+            endTime: "",
           });
           setError("");
         } else {
@@ -181,20 +178,6 @@ function CreateAndUpdatePost({
       }
     }
   };
-
-  const handleCheckAuctionChange = () => {
-    setCheckAuction((prevCheck) => !prevCheck);
-    
-    setFormData((prevData) => ({
-      ...prevData,
-      startPrice: checkAuction ?  0 : formData.startPrice,
-      auctionStatus: checkAuction === true ? 2 : 1,
-    }));
-  };
-
-  console.log(checkAuction)
-
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -202,11 +185,12 @@ function CreateAndUpdatePost({
       [name]: value,
     }));
   };
+  console.log(formData);
   return (
     <>
       <Modal show={showPopup} onHide={closePopup}>
         <Modal.Header closeButton>
-          <Modal.Title>{post ? "Sửa bài viết" : "Đăng bài viết"}</Modal.Title>
+          <Modal.Title>{project ? "Sửa dự án" : "Đăng dự án"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row className="mb-5 popup_post">
@@ -220,12 +204,12 @@ function CreateAndUpdatePost({
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1">
-                  <Form.Label>Tiêu đề</Form.Label>
+                  <Form.Label>Tên dự án</Form.Label>
                   <Form.Control
-                    name="title"
-                    value={formData.title || ""}
+                    name="nameProject"
+                    value={formData.nameProject || ""}
                     type="text"
-                    placeholder="Nhập tiêu đề..."
+                    placeholder="Nhập tên dự án..."
                     onChange={handleInputChange}
                     required
                   />
@@ -233,13 +217,39 @@ function CreateAndUpdatePost({
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlTextarea1">
-                  <Form.Label>Nội dung</Form.Label>
+                  <Form.Label>Mục đích</Form.Label>
                   <Form.Control
                     as="textarea"
-                    name="content"
-                    value={formData.content || ""}
+                    name="purpose"
+                    value={formData.purpose || ""}
                     rows={3}
-                    placeholder="Nhập nội dung..."
+                    placeholder="Nhập mục đích..."
+                    onChange={handleInputChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlTextarea1">
+                  <Form.Label>Địa chỉ</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    name="address"
+                    value={formData.address || ""}
+                    rows={3}
+                    placeholder="Nhập địa chỉ..."
+                    onChange={handleInputChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlTextarea1">
+                  <Form.Label>Số tiền huy động</Form.Label>
+                  <Form.Control
+                    name="amountRaised"
+                    value={formData.amountRaised || ""}
+                    placeholder="Nhập số tiền huy động..."
                     onChange={handleInputChange}
                     required
                   />
@@ -249,50 +259,40 @@ function CreateAndUpdatePost({
                   className="mb-3"
                   controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Hình ảnh</Form.Label>
-                  <Form.Control onChange={handleImageChange} type="file" multiple="multiple"/>
-                  {formData.images.length > 0 ? <ImagePost listImage={formData.images}/> : <></>}
+                  <Form.Control
+                    onChange={handleImageChange}
+                    type="file"
+                    multiple="multiple"
+                  />
+                  {formData.images.length > 0 ? (
+                    <ImagePost listImage={formData.images} />
+                  ) : (
+                    <></>
+                  )}
                 </Form.Group>
                 <Form.Group>
-                  <Form.Check // prettier-ignore
-                    type="switch"
-                    className="mb-3"
-                    label="Có đấu giá"
-                    checked={checkAuction}
-                    onChange={handleCheckAuctionChange}
+                  <Form.Label>Thời gian bắt đầu</Form.Label>
+                  <Form.Control
+                    name="startTime"
+                    defaultValue={formData.startTime || ""}
+                    onChange={handleInputChange}
+                    placeholder="Chọn ngày bắt đầu"
+                    type="date"
+                  />
+                  <Form.Label>Thời gian kết thúc</Form.Label>
+                  <Form.Control
+                    name="endTime"
+                    defaultValue={formData.endTime || ""}
+                    onChange={handleInputChange}
+                    placeholder="Chọn ngày kết thúc"
+                    type="date"
                   />
                 </Form.Group>
-                {checkAuction === true ? (
-                  <>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Giá khởi điểm</Form.Label>
-                      <Form.Control
-                        value={formData.startPrice || ""}
-                        onChange={handleInputChange}
-                        type="text"
-                        name="startPrice"
-                        placeholder="Nhập giá khởi điểm"
-                      />
-                      <Form.Label>Thời gian bắt đầu</Form.Label>
-                      <Form.Control 
-                        name="auctionStartTime"
-                        value={formData.auctionStartTime || ""}
-                        onChange={handleInputChange}
-                        type="date"
-                      />
-                      <Form.Label>Thời gian kết thúc</Form.Label>
-                      <Form.Control 
-                        name="auctionEndTime"
-                        value={formData.auctionEndTime || ""}
-                        onChange={handleInputChange}
-                        type="date"
-                      />
-                    </Form.Group>
-                  </>
-                ) : (
-                  <></>
-                )}
 
-                <Button className="bg-bs-primary bg-color-btn-main" type="submit" disabled={loading}>
+                <Button
+                  className="bg-bs-primary bg-color-btn-main mt-[8px]"
+                  type="submit"
+                  disabled={loading}>
                   {loading === true ? "Đang tải" : "Đăng"}
                 </Button>
               </Form>
@@ -304,4 +304,4 @@ function CreateAndUpdatePost({
   );
 }
 
-export default CreateAndUpdatePost;
+export default CreateAndUpdateProject;

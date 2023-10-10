@@ -249,7 +249,7 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
         
         <Card.Body>
           <Card.Title>
-            <Link to={`/post/${post.id}`}>{post.title}</Link>
+            <Link to={`/post-auction/${post.id}`}>{post.title}</Link>
           </Card.Title>
           <Card.Text>{post.content}</Card.Text>
           {user !== null && post.auctionStatus.id === 2 ? (
