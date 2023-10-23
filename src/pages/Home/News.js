@@ -41,7 +41,7 @@ function News() {
             <div className="">
               <div>
                 <div className="flex mb-[30px] bg-color-item-news">
-                  <img src={news_img} alt="" />
+                  <img src={news_img} width={125} alt="" />
                   <div className="p-[10px] flex flex-column w-full">
                     <h2 className="font-['Calistoga'] text-[26px] mb-[12px]">
                       Tiêu đề
@@ -54,7 +54,7 @@ function News() {
                   </div>
                 </div>
                 <div className="flex mb-[30px] bg-color-item-news">
-                  <img src={news_img} alt="" />
+                  <img src={news_img} width={125} alt="" />
                   <div className="p-[10px] flex flex-column w-full">
                     <h2 className="font-['Calistoga'] text-[26px] mb-[12px]">
                       Tiêu đề
@@ -67,7 +67,20 @@ function News() {
                   </div>
                 </div>
                 <div className="flex mb-[30px] bg-color-item-news">
-                  <img src={news_img} alt="" />
+                  <img src={news_img} width={125} alt="" />
+                  <div className="p-[10px] flex flex-column w-full">
+                    <h2 className="font-['Calistoga'] text-[26px] mb-[12px]">
+                      Tiêu đề
+                    </h2>
+                    <p className="text-[15px]">Nội dung</p>
+                    <Link className="flex items-center text-[15px] mt-auto">
+                      Xem thêm{" "}
+                      <img className="ml-[4px]" src={arrow_black} alt="" />
+                    </Link>
+                  </div>
+                </div>
+                <div className="flex mb-[30px] bg-color-item-news">
+                  <img src={news_img} width={125} alt="" />
                   <div className="p-[10px] flex flex-column w-full">
                     <h2 className="font-['Calistoga'] text-[26px] mb-[12px]">
                       Tiêu đề

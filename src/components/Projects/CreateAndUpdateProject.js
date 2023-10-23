@@ -44,8 +44,8 @@ function CreateAndUpdateProject({
         address: project.address,
         amountRaised: project.amountRaised,
         images: project.images ? project.images : [],
-        startTime: formatDateForInput(project.startTime),
-        endTime: formatDateForInput(project.endTime),
+        startTime: project.startTime ? formatDateForInput(project.startTime) : "Chưa cập nhật",
+        endTime: project.endTime ? formatDateForInput(project.endTime) : "Chưa cập nhật",
       }));
     } else {
       setFormData((prevData) => ({
@@ -143,7 +143,7 @@ function CreateAndUpdateProject({
             startTime: "",
             endTime: "",
           });
-          navigate("/project-auction")
+          navigate("/project-charity")
           console.log("Project updated successfully");
         } else if (response.status === 500) {
           console.log("Failed to add or update project");
@@ -170,6 +170,7 @@ function CreateAndUpdateProject({
             endTime: "",
           });
           setError("");
+          alert("Cảm ơn bạn đã đăng dự án, xin vui lòng chờ quản trị viên duyệt dự án của bạn")
         } else {
           // Xử lý lỗi khi đăng bài viết
         }
@@ -185,7 +186,6 @@ function CreateAndUpdateProject({
       [name]: value,
     }));
   };
-  console.log(formData);
   return (
     <>
       <Modal show={showPopup} onHide={closePopup}>

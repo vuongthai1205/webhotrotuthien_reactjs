@@ -305,6 +305,7 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
             <Col>
               <Form onSubmit={handlSubmitComment}>
                 <Form.Control
+                required
                   className="mb-2"
                   type="text"
                   name="content"
@@ -329,7 +330,7 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
                         alt=""
                       />
                       <div>
-                        <Link to={`/profile?iduser=${item.idUser}`}>
+                        <Link className="text-color-btn-main" to={`/profile?iduser=${item.idUser}`}>
                           <h3 className="comment-user-name">{item.username}</h3>
                         </Link>
 

@@ -27,7 +27,7 @@ const publicRoutes = [
   },
   { path: "/post-auction", component: PostAuction, title: "Bài viết từ thiện" },
   {
-    path: "/project-auction",
+    path: "/project-charity",
     component: ProjectAuction,
     title: "Dự án từ thiện",
   },
@@ -36,7 +36,7 @@ const publicRoutes = [
 const privateRoutes = [
   { path: "/post-auction/:postId", component: PostDetail },
   {
-    path: "/project-auction/:projectId",
+    path: "/project-charity/:projectId",
     component: DetailProject,
     title: "Dự án từ thiện",
   },

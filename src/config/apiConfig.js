@@ -13,8 +13,11 @@ export const endpoints = {
     "get-count-pages": `${SERVER_CONTEXT}/api/post/count-pages/`,
     "auction": `${SERVER_CONTEXT}/api/auction/`,
     "comment": `${SERVER_CONTEXT}/api/post/comment/`,
+    "commentProject": `${SERVER_CONTEXT}/api/project/comment/`,
     "user": `${SERVER_CONTEXT}/api/user/`,
-    "project":  `${SERVER_CONTEXT}/api/charity-project/`
+    "project":  `${SERVER_CONTEXT}/api/charity-project/`,
+    "joinProject" :`${SERVER_CONTEXT}/api/join-project/`,
+    "report":`${SERVER_CONTEXT}/api/report/`
 }
 
 export const authApi = () => {

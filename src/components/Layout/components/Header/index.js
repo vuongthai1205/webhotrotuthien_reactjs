@@ -1,11 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Button, Col, Container, Nav, Navbar, NavDropdown, Row } from "react-bootstrap"; // Import components from react-bootstrap
+import {
+  Button,
+  Col,
+  Container,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Row,
+} from "react-bootstrap"; // Import components from react-bootstrap
 import Image from "react-bootstrap/Image";
 import { MyUserContext } from "../../../../App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faRightFromBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faClose,
+  faRightFromBracket,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { logofooter } from "assets/img";
 function Header() {
   const [user, dispatch] = useContext(MyUserContext);
@@ -13,6 +26,11 @@ function Header() {
     dispatch({
       type: "logout",
     });
+  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
   return (
     <section className="seaction-header">
@@ -28,8 +46,17 @@ function Header() {
                   WEBSITE HỖ TRỢ TỪ THIỆN <br /> TRƯỜNG ĐẠI HỌC MỞ TPHCM
                 </Link>
               </div>
-              <div className="self-stretch d-none d-lg-block">
-                <ul className="flex menu-header h-full">
+              <div className="self-stretch">
+                <ul
+                  className={`flex menu-header h-full ${
+                    isMenuOpen ? "menu-open" : ""
+                  }`}
+                  >
+                    <span
+                    className="btn-closemenu d-block d-lg-none p-[8px] cursor-pointer d-lg-none d-block bg-white"
+                    onClick={toggleMenu}>
+                    <FontAwesomeIcon icon={faClose} />
+                  </span>
                   <li className="item-menu-header ml-[13px]">
                     <NavLink
                       to={"/"}
@@ -46,7 +73,7 @@ function Header() {
                   </li>
                   <li className="item-menu-header ml-[13px]">
                     <NavLink
-                      to={"/project-auction"}
+                      to={"/project-charity"}
                       className="item-link-header flex items-center">
                       DỰ ÁN
                     </NavLink>
@@ -89,7 +116,6 @@ function Header() {
                           onClick={handleLogout}
                           className="btn-login flex items-center gap-[4px] cursor-pointer bg-color-btn-danger"
                           variant="danger">
-                            
                           <FontAwesomeIcon icon={faRightFromBracket} />
                           ĐĂNG XUẤT
                         </Button>
@@ -116,6 +142,13 @@ function Header() {
                     </>
                   )}
                 </ul>
+                <span
+                  className={`btn-showmenu p-[8px] cursor-pointer d-lg-none d-block bg-white ${
+                    isMenuOpen ? "hidden" : ""
+                  }`}
+                  onClick={toggleMenu}>
+                  <FontAwesomeIcon icon={faBars} />
+                </span>
               </div>
             </div>
           </Col>

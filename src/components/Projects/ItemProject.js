@@ -1,6 +1,7 @@
 import { faAngleRight, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ImagePost from "components/Posts/ImagePost";
+import { formatCurrency } from "functions";
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -23,8 +24,8 @@ function ItemProject({ onProjectUpdate, project }) {
               <h2 className="font-['Calistoga'] font-bold text-[18px] mb-[12px]">Tên dự án: <span>{project.nameProject}</span></h2>
               <h3 className="mb-[4px]">Mục đích: <span>{project.purpose}</span></h3>
               <h3 className="mb-[4px]">Địa điểm: <span>{project.address}</span></h3>
-              <h3 className="mb-[4px]">Số tiền huy động: <span>{project.amountRaised}</span></h3>
-              <Link to={`/project-auction/${project.id}`} className="font-bold underline underline-offset-1 text-color-btn-main mt-auto ml-auto">Tìm hiểu thêm <FontAwesomeIcon icon={faArrowRight} /> </Link>
+              <h3 className="mb-[4px]">Số tiền huy động: <span>{formatCurrency(project.amountRaised)}</span></h3>
+              <Link to={`/project-charity/${project.id}`} className="font-bold underline underline-offset-1 text-color-btn-main mt-auto ml-auto">Tìm hiểu thêm <FontAwesomeIcon icon={faArrowRight} /> </Link>
             </div>
           </Col>
         </Row>

@@ -4,7 +4,7 @@ function Sidebar() {
   return (
     <>
       <h4 className="item-sidebar">
-        <NavLink to={"/project-auction"}>Dự án từ thiện</NavLink>
+        <NavLink to={"/project-charity"}>Dự án từ thiện</NavLink>
       </h4>
       <h4 className="item-sidebar">
         <NavLink

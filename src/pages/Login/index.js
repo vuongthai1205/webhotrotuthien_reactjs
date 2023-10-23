@@ -13,6 +13,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
+  const [error, setError] = useState('');
   const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -27,16 +28,27 @@ function Login() {
         username,
         password,
       });
-      cookie.save("token", response.data.token);
-      let { data } = await authApi().get(endpoints["current-user"]);
-      cookie.save("user", data);
-
-      dispatch({
-        type: "login",
-        payload: data,
-      });
+      if(response.status === 200) {
+        cookie.save("token", response.data.token);
+        let { data } = await authApi().get(endpoints["current-user"]);
+        cookie.save("user", data);
+  
+        dispatch({
+          type: "login",
+          payload: data,
+        });
+      }
+      else if (response.status === 400){
+        setError("Sai mật khẩu")
+      }
+      
     } catch (error) {
-      console.error("Login error:", error);
+      if(error.response.status === 400){
+        setError("Sai mật khẩu")
+      }
+      else{
+        setError("Kiểm tra lại thông tin")
+      }
     }
   };
 
@@ -71,11 +83,12 @@ function Login() {
                 />
               </Form.Group>
               <Button
-                className="bg-color-btn-main"
+                className="bg-color-btn-main relative"
                 type="submit"
                 variant="primary">
-                Đăng nhập
+                Đăng nhập 
               </Button>
+              <span className="text-color-btn-danger ml-[12px]">{error}</span>
             </Form>
           </Col>
         </Row>

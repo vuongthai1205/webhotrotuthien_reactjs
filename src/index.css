@@ -241,3 +241,30 @@ section.seaction-header {
   border: 1px solid #2D754E;
   background-color: #74C99B;
 }
+
+@media screen and (max-width: 789px) {
+  .menu-header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background: var(--topbar-color);
+  }
+  .btn-closemenu{
+    position: absolute;
+    top: 23px;
+    right: 23px;
+  }
+  .menu-open {
+    display: none; /* Hiển thị menu khi được áp dụng */
+  }
+  
+  .hidden {
+    display: none; /* Ẩn phần tử khi được áp dụng */
+  }
+  
+}

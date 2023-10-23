@@ -19,7 +19,7 @@ function About() {
                 <hr className="w-[173px] mb-[11px] mx-auto text-color-line"></hr>
                 <hr className="w-[116px] mx-auto text-color-line"></hr>
                 <h3 className="text-center text-[11px] uppercase my-[38px]">
-                  GIỚI THIỆU
+                WEBSITE HỖ TRỢ CÁC HOẠT ĐỘNG TỪ THIỆN
                 </h3>
               </div>
             </Col>
@@ -30,8 +30,8 @@ function About() {
             </Col>
             <Col lg={6}>
               <div>
-                <p className="text-[12px]">MÔ TẢ</p>
-                <p className="text-[12px] mt-[93px]">MÔ TẢ</p>
+                <p className="text-[12px]">Trang web hỗ trợ từ thiện của tôi là một nền tảng trực tuyến được tạo ra với mục tiêu chung là xây dựng một cộng đồng năng động và đoàn kết, nơi mọi người có cơ hội chia sẻ và tham gia vào các hoạt động từ thiện. Vào những năm gần đây, hoạt động từ thiện đã trở nên ngày càng quan trọng và phổ biến trong xã hội. Tuy nhiên, việc kết nối người chủ dự án từ thiện, những người muốn đóng góp, và những người cần sự hỗ trợ vẫn còn gặp nhiều khó khăn. Đó là lý do tại sao trang web hỗ trợ từ thiện của chúng tôi ra đời.</p>
+                <p className="text-[12px] mt-[93px]">Trang web này giúp cho việc từ thiện trở nên minh bạch, nhanh chóng, và dễ dàng hơn bao giờ hết. Người dùng có thể tạo và quản lý các dự án từ thiện, đăng bài viết để kể về những khoảnh khắc đáng nhớ và đăng sản phẩm để đấu giá với mục đích từ thiện. Trang web cũng cung cấp các công cụ quản lý cho người chủ dự án và cho phép người dùng đăng ký tham gia vào các dự án từ thiện một cách dễ dàng.</p>
               </div>
             </Col>
           </Row>

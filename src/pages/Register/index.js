@@ -15,13 +15,13 @@ function Register() {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
-    phone: "",
+    tenDangNhap: "",
+    soDienThoai: "",
     email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    avatar: "",
+    matKhau: "",
+    ten: "",
+    ho: "",
+    anhDaiDien: "",
   });
 
   const handleImageChange = async (e) => {
@@ -58,7 +58,7 @@ function Register() {
             setLoading(false);
             setFormData((prevData) => ({
               ...prevData,
-              avatar: downloadURL,
+              anhDaiDien: downloadURL,
             }));
           });
         }
@@ -69,13 +69,13 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataToSend = new FormData();
-    formDataToSend.append("username", formData.username);
-    formDataToSend.append("phone", formData.phone);
+    formDataToSend.append("tenDangNhap", formData.tenDangNhap);
+    formDataToSend.append("soDienThoai", formData.soDienThoai);
     formDataToSend.append("email", formData.email);
-    formDataToSend.append("password", formData.password);
-    formDataToSend.append("firstName", formData.firstName);
-    formDataToSend.append("lastName", formData.lastName);
-    formDataToSend.append("avatar", formData.avatar);
+    formDataToSend.append("matKhau", formData.matKhau);
+    formDataToSend.append("ten", formData.ten);
+    formDataToSend.append("ho", formData.ho);
+    formDataToSend.append("anhDaiDien", formData.anhDaiDien);
     try {
       const response = await apiConfig.post(
         endpoints["register"],
@@ -114,52 +114,52 @@ function Register() {
           <Col>
             <h2 className="font-['Calistoga'] text-[25px] text-center">Trang đăng ký</h2>
             <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="username">
+              <Form.Group controlId="tenDangNhap">
                 <Form.Label>Tên đăng nhập</Form.Label>
                 <Form.Control
                   type="text"
-                  name="username"
-                  value={formData.username}
+                  name="tenDangNhap"
+                  value={formData.tenDangNhap}
                   onChange={handleInputChange}
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="password">
+              <Form.Group controlId="matKhau">
                 <Form.Label>Mật khẩu</Form.Label>
                 <Form.Control
                   type="password"
-                  name="password"
-                  value={formData.password}
+                  name="matKhau"
+                  value={formData.matKhau}
                   onChange={handleInputChange}
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="firstName">
+              <Form.Group controlId="ten">
                 <Form.Label>Tên</Form.Label>
                 <Form.Control
                   type="text"
-                  name="firstName"
-                  value={formData.firstName}
+                  name="ten"
+                  value={formData.ten}
                   onChange={handleInputChange}
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="lastName">
+              <Form.Group controlId="ho">
                 <Form.Label>Họ</Form.Label>
                 <Form.Control
                   type="text"
-                  name="lastName"
-                  value={formData.lastName}
+                  name="ho"
+                  value={formData.ho}
                   onChange={handleInputChange}
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="phone">
+              <Form.Group controlId="soDienThoai">
                 <Form.Label>Số điện thoại</Form.Label>
                 <Form.Control
-                  type="phone"
-                  name="phone"
-                  value={formData.phone}
+                  type="soDienThoai"
+                  name="soDienThoai"
+                  value={formData.soDienThoai}
                   onChange={handleInputChange}
                   required
                 />
@@ -174,7 +174,7 @@ function Register() {
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="avatar">
+              <Form.Group controlId="anhDaiDien">
                 <Form.Label>Ảnh đại diện</Form.Label>
                 <Form.Control
                   type="file"
@@ -182,8 +182,8 @@ function Register() {
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="avatar">
-                <Image height={200} src={formData.avatar} />
+              <Form.Group>
+                <Image height={200} src={formData.anhDaiDien} />
               </Form.Group>
 
               <Button

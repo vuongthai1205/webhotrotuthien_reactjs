@@ -14,17 +14,17 @@ function Gratitude() {
           </Col>
           <Col lg={4}>
             <div className="flex items-center justify-end">
-              <img src={gratidute} alt="" />
+              <img src={gratidute} width={300} alt="" />
             </div>
           </Col>
           <Col lg={4} className="flex items-center justify-center">
             <div>
-              <img src={gratidute} alt="" />
+              <img src={gratidute} width={300} alt="" />
             </div>
           </Col>
           <Col lg={4}>
             <div className="flex items-center justify-start">
-              <img src={gratidute} alt="" />
+              <img src={gratidute} width={300} alt="" />
             </div>
           </Col>
         </Row>

@@ -17,7 +17,7 @@ function FormSignUp() {
               <h2 className="text-[45px] font-['Calistoga'] text-white mb-[41px]">
                 TÌNH NGUYỆN VIÊN
               </h2>
-              <span className="text-[24px] text-white">ABC</span>
+              <span className="text-[24px] text-white">Tình nguyện viên là những người tự nguyện đóng góp thời gian, năng lực, và tình cảm của họ để làm việc cho các tổ chức từ thiện, hoạt động xã hội, hoặc các mục tiêu có ý nghĩa xã hội.</span>
             </div>
           </Col>
           <Col lg={6}>
