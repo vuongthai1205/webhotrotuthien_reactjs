@@ -34,7 +34,7 @@ function RegisterProject({ project, showPopup, closePopup }) {
       );
       if (response.status === 201) {
         closePopup();
-        navigate(`/project-charity/${project.project.id}`);
+        navigate("/project-charity");
         console.log("Project updated successfully");
       } else if (response.status === 500) {
         alert(
@@ -95,7 +95,6 @@ function RegisterProject({ project, showPopup, closePopup }) {
                     type="text"
                     placeholder="Nhập số tiền đóng góp..."
                     onChange={handleInputChange}
-                    required
                   />
                 </Form.Group>
                 <Form.Group
@@ -109,7 +108,6 @@ function RegisterProject({ project, showPopup, closePopup }) {
                     rows={3}
                     placeholder="Nhập các đóng góp khác..."
                     onChange={handleInputChange}
-                    required
                   />
                 </Form.Group>
                 <Button

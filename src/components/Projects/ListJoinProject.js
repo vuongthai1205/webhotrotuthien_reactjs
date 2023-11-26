@@ -41,7 +41,7 @@ function ListJoinProject({ project }) {
       );
 
       if (response.status === 204) {
-        navigate("/project-auction");
+        navigate("/project-charity");
       } else {
         console.log("error");
       }
