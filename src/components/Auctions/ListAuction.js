@@ -17,6 +17,8 @@ function ListAuction({ listAuction, showPopup, closePopup }) {
                 winner={element.winnerAuctioned}
                 username={element.username}
                 price={element.price}
+                idUser={element.idUser}
+                idPost={element.idPost}
               />
             );
           })}

@@ -7,7 +7,8 @@ import DeletePost from "./DeletePost";
 import { Link, useNavigate } from "react-router-dom";
 import ListAuction from "../Auctions/ListAuction";
 import ImagePost from "./ImagePost";
-
+import parse from "html-react-parser";
+import { formatCurrency } from "functions";
 function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
   const [user, dispatch] = useContext(MyUserContext);
   const [like, setLike] = useState(false);
@@ -115,7 +116,7 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
       const response = await authApi().post(endpoints["auction"], formPrice);
 
       if (response.status === 201) {
-        setFormPrice({price: "",})
+        setFormPrice({ price: "" });
         alert("Đấu giá thành công");
       } else {
         alert("Không thành công");
@@ -160,7 +161,7 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
           formComment
         );
         if (response.status === 201) {
-          setFormComment({content: ""})
+          setFormComment({ content: "" });
           onPostUpdate();
         } else {
           console.log("lỗi rồi ");
@@ -194,7 +195,7 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
         {action ? (
           <div className="action_post">
             <Button
-            className=" bg-color-btn-success"
+              className=" bg-color-btn-success"
               variant="success"
               onClick={() => {
                 handleShow(post.id);
@@ -212,7 +213,10 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
               />
             )}
 
-            <Button variant="danger" className="bg-color-btn-danger" onClick={handleShowDelete}>
+            <Button
+              variant="danger"
+              className="bg-color-btn-danger"
+              onClick={handleShowDelete}>
               Xóa
             </Button>
 
@@ -225,7 +229,7 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
             {(user !== null && post.auctionStatus.id === 2) ||
             (user !== null && post.auctionStatus.id === 3) ? (
               <Button
-              className="bg-color-btn-info"
+                className="bg-color-btn-info"
                 variant="info"
                 onClick={() => {
                   handleShowAuction(post.id);
@@ -245,23 +249,36 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
         ) : (
           <></>
         )}
-        {post.imagesPost.length > 0 ? <ImagePost listImage={post.imagesPost}/> : <></>}
-        
+        {post.imagesPost.length > 0 ? (
+          <ImagePost listImage={post.imagesPost} />
+        ) : (
+          <></>
+        )}
+
         <Card.Body>
           <Card.Title>
             <Link to={`/post-auction/${post.id}`}>{post.title}</Link>
           </Card.Title>
-          <Card.Text>{post.content}</Card.Text>
+          <div>{post.content ? parse(post.content) : ""}</div>
           {user !== null && post.auctionStatus.id === 2 ? (
             auctioned === false ? (
-              <>
+              <div className="my-[18px]">
                 <Card.Text>
-                  Ngày bắt đầu đấu giá: {post.startAuctionTime}
+                  <span className="font-bold mr-[8px]">
+                    Ngày bắt đầu đấu giá:
+                  </span>
+                  {post.startAuctionTime || "Chủ bài viết không đề cập tới ngày bắt đầu"}
                 </Card.Text>
                 <Card.Text>
-                  Ngày kết thúc đấu giá: {post.endAuctionTime}
+                  <span className="font-bold mr-[8px]">
+                    Ngày kết thúc đấu giá:{" "}
+                  </span>
+                  { post.endAuctionTime || "Chủ bài viết không đề cập tới ngày kết thúc"}
                 </Card.Text>
-                <Card.Text>Giá Khởi điểm: {post.startPrice}</Card.Text>
+                <Card.Text>
+                  <span className="font-bold mr-[8px]">Giá Khởi điểm: </span>
+                  {formatCurrency(post.startPrice) }
+                </Card.Text>
                 <Form onSubmit={handleSubmitStartPrice} className="my-3">
                   <Form.Group>
                     <Form.Control
@@ -277,15 +294,15 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
                     Gửi
                   </Button>
                 </Form>
-              </>
+              </div>
             ) : (
-              <h4>Bạn đã đấu giá bài viết</h4>
+              <h4 className="my-[18px] italic text-color-btn-success">Bạn đã đấu giá bài viết</h4>
             )
           ) : (
             <></>
           )}
           {user !== null && post.auctionStatus.id === 3 ? (
-            <h5>Đã kết thúc đấu giá</h5>
+            <h5 className="my-[18px] italic text-color-btn-success">Đã kết thúc đấu giá</h5>
           ) : (
             <></>
           )}
@@ -305,13 +322,16 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
             <Col>
               <Form onSubmit={handlSubmitComment}>
                 <Form.Control
-                required
+                  required
                   className="mb-2"
                   type="text"
                   name="content"
                   value={formComment.content}
                   onChange={handleContentChange}></Form.Control>
-                <Button type="submit" variant="secondary" className="bg-color-btn-secondary">
+                <Button
+                  type="submit"
+                  variant="secondary"
+                  className="bg-color-btn-secondary">
                   Bình luận
                 </Button>
               </Form>
@@ -330,7 +350,9 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
                         alt=""
                       />
                       <div>
-                        <Link className="text-color-btn-main" to={`/profile?iduser=${item.idUser}`}>
+                        <Link
+                          className="text-color-btn-main"
+                          to={`/profile?iduser=${item.idUser}`}>
                           <h3 className="comment-user-name">{item.username}</h3>
                         </Link>
 
@@ -348,8 +370,7 @@ function ItemPost({ onPostUpdate, post, xuLyThichBaiViet }) {
                             }
                           }}
                           className="btn-delete-cmt bg-color-btn-danger"
-                          variant="danger"
-                          >
+                          variant="danger">
                           Xóa
                         </Button>
                       ) : (

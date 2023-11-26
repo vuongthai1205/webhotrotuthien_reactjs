@@ -34,7 +34,7 @@ function RegisterProject({ project, showPopup, closePopup }) {
       );
       if (response.status === 201) {
         closePopup();
-        navigate("/project-auction");
+        navigate(`/project-charity/${project.project.id}`);
         console.log("Project updated successfully");
       } else if (response.status === 500) {
         alert(

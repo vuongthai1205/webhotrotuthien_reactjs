@@ -49,7 +49,7 @@ function Header() {
               <div className="self-stretch">
                 <ul
                   className={`flex menu-header h-full ${
-                    isMenuOpen ? "menu-open" : ""
+                    !isMenuOpen ? "menu-open" : ""
                   }`}
                   >
                     <span

@@ -44,6 +44,7 @@ function Login() {
         setError("Sai mật khẩu");
       }
     } catch (error) {
+      setLoading(false);
       if (error.response.status === 400) {
         setError("Sai mật khẩu");
       } else {

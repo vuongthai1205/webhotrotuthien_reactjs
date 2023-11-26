@@ -268,3 +268,9 @@ section.seaction-header {
   }
   
 }
+
+.editorClassName{
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}

@@ -13,7 +13,10 @@ import { useContext } from "react";
 import { MyUserContext } from "../../App";
 import { useEffect } from "react";
 import ImagePost from "./ImagePost";
-
+import draftToHtml from "draftjs-to-html";
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState, convertToRaw } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 function CreateAndUpdatePost({
   onPostCreated,
   showPopup,
@@ -21,30 +24,29 @@ function CreateAndUpdatePost({
   post,
   onPostUpdate,
 }) {
-  
   const [error, setError] = useState("");
   const [user, dispatch] = useContext(MyUserContext);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [checkAuction, setCheckAuction] = useState(false);
-
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [formData, setFormData] = useState({
     title: "",
     content: "",
     images: [],
     startPrice: "",
-    auctionStatus: checkAuction === true ? 2 : 1 ,
+    auctionStatus: checkAuction === true ? 2 : 1,
     auctionStartTime: "",
-    auctionEndTime: ""
-  }); 
+    auctionEndTime: "",
+  });
   useEffect(() => {
     if (post !== undefined) {
-      setFormData((prevData) => ( {
+      setFormData((prevData) => ({
         ...prevData,
         title: post.title,
         content: post.content,
         images: post.imagesPost ? post.imagesPost : [],
-        startPrice: checkAuction ?  post.startPrice : 0,
+        startPrice: checkAuction ? post.startPrice : 0,
         auctionStatus: checkAuction ? 2 : 1,
       }));
     } else {
@@ -54,13 +56,9 @@ function CreateAndUpdatePost({
       }));
     }
   }, [post, checkAuction]);
-  
 
   const isFormDataValid = (data) => {
-    if (
-      data.title.trim() === "" ||
-      data.content.trim() === "" 
-    ) {
+    if (data.title.trim() === "" || data.content.trim() === "") {
       setError("Vui lòng điền thông tin");
       return true;
     } else if (data.title.trim() === "") {
@@ -70,14 +68,13 @@ function CreateAndUpdatePost({
       return false;
     }
   };
-  console.log(formData)
+  console.log(formData);
   const handleImageChange = async (e) => {
     setFormData((prevData) => ({
       ...prevData,
       images: [],
     }));
-    for(let i = 0 , f ; f = e.target.files[i]; i++ ){
-
+    for (let i = 0, f; (f = e.target.files[i]); i++) {
       if (f) {
         const image = f;
         const storageRef = getStorage(appFirebase);
@@ -94,7 +91,7 @@ function CreateAndUpdatePost({
             switch (snapshot.state) {
               case "paused":
                 console.log("Upload is paused");
-  
+
                 break;
               case "running":
                 setLoading(true);
@@ -110,9 +107,9 @@ function CreateAndUpdatePost({
             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               setLoading(false);
-              setFormData(prevFormData => ({
+              setFormData((prevFormData) => ({
                 ...prevFormData,
-                images: [...prevFormData.images, { link: downloadURL }]
+                images: [...prevFormData.images, { link: downloadURL }],
               }));
             });
           }
@@ -184,22 +181,28 @@ function CreateAndUpdatePost({
 
   const handleCheckAuctionChange = () => {
     setCheckAuction((prevCheck) => !prevCheck);
-    
+
     setFormData((prevData) => ({
       ...prevData,
-      startPrice: checkAuction ?  0 : formData.startPrice,
+      startPrice: checkAuction ? 0 : formData.startPrice,
       auctionStatus: checkAuction === true ? 2 : 1,
     }));
   };
 
-  console.log(checkAuction)
-
+  console.log(checkAuction);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
     }));
   };
   return (
@@ -220,7 +223,7 @@ function CreateAndUpdatePost({
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1">
-                  <Form.Label>Tiêu đề</Form.Label>
+                  <Form.Label className="font-bold">Tiêu đề</Form.Label>
                   <Form.Control
                     name="title"
                     value={formData.title || ""}
@@ -230,33 +233,42 @@ function CreateAndUpdatePost({
                     required
                   />
                 </Form.Group>
+
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlTextarea1">
-                  <Form.Label>Nội dung</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    name="content"
-                    value={formData.content || ""}
-                    rows={3}
+                  <Form.Label className="font-bold">Nội dung</Form.Label>
+                  <Editor
+                    editorState={editorState}
+                    toolbarClassName="toolbarClassName"
+                    wrapperClassName="wrapperClassName"
+                    editorClassName="editorClassName"
+                    onEditorStateChange={onEditorStateChange}
                     placeholder="Nhập nội dung..."
-                    onChange={handleInputChange}
-                    required
                   />
                 </Form.Group>
 
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlTextarea1">
-                  <Form.Label>Hình ảnh</Form.Label>
-                  <Form.Control onChange={handleImageChange} type="file" multiple="multiple"/>
-                  {formData.images.length > 0 ? <ImagePost listImage={formData.images}/> : <></>}
+                  <Form.Label className="font-bold">Hình ảnh</Form.Label>
+                  <Form.Control
+                    onChange={handleImageChange}
+                    type="file"
+                    multiple="multiple"
+                  />
+                  {formData.images.length > 0 ? (
+                    <ImagePost listImage={formData.images} />
+                  ) : (
+                    <></>
+                  )}
                 </Form.Group>
                 <Form.Group>
                   <Form.Check // prettier-ignore
                     type="switch"
-                    className="mb-3"
+                    className="mb-3 font-bold"
                     label="Có đấu giá"
+                    
                     checked={checkAuction}
                     onChange={handleCheckAuctionChange}
                   />
@@ -264,7 +276,7 @@ function CreateAndUpdatePost({
                 {checkAuction === true ? (
                   <>
                     <Form.Group className="mb-3">
-                      <Form.Label>Giá khởi điểm</Form.Label>
+                      <Form.Label className="font-bold">Giá khởi điểm</Form.Label>
                       <Form.Control
                         value={formData.startPrice || ""}
                         onChange={handleInputChange}
@@ -272,15 +284,15 @@ function CreateAndUpdatePost({
                         name="startPrice"
                         placeholder="Nhập giá khởi điểm"
                       />
-                      <Form.Label>Thời gian bắt đầu</Form.Label>
-                      <Form.Control 
+                      <Form.Label className="font-bold">Thời gian bắt đầu</Form.Label>
+                      <Form.Control
                         name="auctionStartTime"
                         value={formData.auctionStartTime || ""}
                         onChange={handleInputChange}
                         type="date"
                       />
-                      <Form.Label>Thời gian kết thúc</Form.Label>
-                      <Form.Control 
+                      <Form.Label className="font-bold">Thời gian kết thúc</Form.Label>
+                      <Form.Control
                         name="auctionEndTime"
                         value={formData.auctionEndTime || ""}
                         onChange={handleInputChange}
@@ -292,7 +304,10 @@ function CreateAndUpdatePost({
                   <></>
                 )}
 
-                <Button className="bg-bs-primary bg-color-btn-main" type="submit" disabled={loading}>
+                <Button
+                  className="bg-bs-primary bg-color-btn-main"
+                  type="submit"
+                  disabled={loading}>
                   {loading === true ? "Đang tải" : "Đăng"}
                 </Button>
               </Form>
