@@ -9,6 +9,7 @@ import ProjectAuction from "../pages/ProjectAuction";
 import About from "pages/About";
 import Contact from "pages/Contact";
 import DetailProject from "components/Projects/DetailProject";
+import TestWebsocket from "pages/TestWebsocket";
 const publicRoutes = [
   { path: "/", layout: HeaderOnly, component: Home, title: "Trang chủ" },
   { path: "/about", layout: HeaderOnly, component: About, title: "Giới thiệu" },
@@ -29,6 +30,10 @@ const publicRoutes = [
   {
     path: "/project-charity",
     component: ProjectAuction,
+    title: "Dự án từ thiện",
+  },{
+    path: "/test-websocket",
+    component: TestWebsocket,
     title: "Dự án từ thiện",
   },
 ];
